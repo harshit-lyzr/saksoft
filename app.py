@@ -16,6 +16,7 @@ app = FastAPI()
 
 class Conversation(BaseModel):
     agent_id: str
+    type: str
     question: str
     agent_answer: str
     admin_answer: Optional[str] = None
@@ -37,7 +38,8 @@ async def add_conversation(conversation: Conversation):
         "agent_id": conversation.agent_id,
         "question": conversation.question,
         "agent_answer": conversation.agent_answer,
-        "admin_answer": conversation.admin_answer
+        "admin_answer": conversation.admin_answer,
+        "type": conversation.type
     }
 
     response = supabase.table('saksoft').insert(data).execute()
@@ -55,7 +57,8 @@ async def update_conversation(id: int, conversation: Conversation):
         "agent_id": conversation.agent_id,
         "question": conversation.question,
         "agent_answer": conversation.agent_answer,
-        "admin_answer": conversation.admin_answer
+        "admin_answer": conversation.admin_answer,
+        "type": conversation.type
     }).eq('id', id).execute()
 
     if response.data:
